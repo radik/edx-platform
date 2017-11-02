@@ -113,7 +113,7 @@ if 'LMS_AUTHENTICATION_BACKENDS' in APPSEMBLER_FEATURES.keys():
 
 #attempt to import model from our custom fork of edx-organizations
 # if it works, then also add the middleware
-try: 
+try:
     from organizations.models import UserOrganizationMapping
     MIDDLEWARE_CLASSES += (
         'organizations.middleware.OrganizationMiddleware',
@@ -121,4 +121,6 @@ try:
 except ImportError:
     pass
 
-
+##### Third-party auth options ################################################
+if FEATURES.get('ENABLE_THIRD_PARTY_AUTH'):
+    SOCIAL_AUTH_OAUTH_EXTRA_SETTINGS = AUTH_TOKENS.get('SOCIAL_AUTH_OAUTH_EXTRA_SETTINGS', {})
