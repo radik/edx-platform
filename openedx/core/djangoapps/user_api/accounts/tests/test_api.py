@@ -46,7 +46,6 @@ from openedx.core.djangoapps.user_api.errors import (
     UserNotFound
 )
 from openedx.core.djangolib.testing.utils import skip_unless_lms
-from request_cache.middleware import RequestCache
 from student.models import PendingEmailChange
 from student.tests.factories import UserFactory
 from student.tests.tests import UserSettingsEventTestMixin
@@ -424,7 +423,7 @@ class AccountCreationActivationAndPasswordChangeTest(TestCase):
         request.user = Mock()
         request.site = SiteFactory()
 
-        with patch.object(RequestCache, 'get_current_request', return_value=request):
+        with patch('crum.get_current_request', return_value=request):
             # Request a password change
             request_password_change(self.EMAIL, self.IS_SECURE)
 
@@ -454,7 +453,7 @@ class AccountCreationActivationAndPasswordChangeTest(TestCase):
         request.user = Mock()
         request.site = SiteFactory()
 
-        with patch.object(RequestCache, 'get_current_request', return_value=request):
+        with patch('crum.get_current_request', return_value=request):
             request_password_change(self.EMAIL, self.IS_SECURE)
 
         # Verify that the activation email was still sent

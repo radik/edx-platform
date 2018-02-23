@@ -31,7 +31,9 @@ from util.password_policy_validators import validate_password_strength
 
 
 class PasswordReset(MessageType):
-    pass
+    options = {
+        'transactional': True,
+    }
 
 
 class PasswordResetFormNoActive(PasswordResetForm):

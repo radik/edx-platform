@@ -216,8 +216,8 @@ class ResetPasswordTests(EventTestMixin, CacheIsolationTestCase):
 
     @unittest.skipUnless(settings.ROOT_URLCONF == 'lms.urls', "Test only valid in LMS")
     @patch("openedx.core.djangoapps.site_configuration.helpers.get_value", fake_get_value)
-    @patch('django.core.mail.send_mail')
-    def test_reset_password_email_configuration_override(self, send_email):
+    @ddt.data('plain_text', 'html')
+    def test_reset_password_email_configuration_override(self, body_type):
         """
         Tests that the right url domain and platform name is included in
         the reset password email
@@ -228,18 +228,26 @@ class ResetPasswordTests(EventTestMixin, CacheIsolationTestCase):
         req.get_host = Mock(return_value=None)
         req.site = Mock(domain='example.com')
         req.user = self.user
-        password_reset(req)
-        _, msg, from_addr, _ = send_email.call_args[0]
 
-        reset_msg = "you requested a password reset for your user account at {}".format(fake_get_value('platform_name'))
+        with patch('crum.get_current_request', return_value=req):
+            password_reset(req)
 
-        self.assertIn(reset_msg, msg)
-        self.assertIn(reset_msg, send_email.call_kwargs['html_message'])
+        sent_message = mail.outbox[0]
+        bodies = {
+            'plain_text': sent_message.body,
+            'html': sent_message.alternatives[0][0],
+        }
+
+        body = bodies[body_type]
+
+        reset_msg = "you requested a password reset for your user account at {}".format(fake_get_value('PLATFORM_NAME'))
+
+        self.assertIn(reset_msg, body)
 
         self.assert_event_emitted(
             SETTING_CHANGE_INITIATED, user_id=self.user.id, setting=u'password', old=None, new=None
         )
-        self.assertEqual(from_addr, "no-reply@fakeuniversity.com")
+        self.assertEqual(sent_message.from_email, "no-reply@fakeuniversity.com")
 
     @ddt.data(
         ('invalidUid', 'invalid_token'),
