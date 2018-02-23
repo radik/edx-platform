@@ -9,8 +9,8 @@ def plugin_settings(settings):
     settings.ACE_CHANNEL_SAILTHRU_TEMPLATE_NAME = 'Automated Communication Engine Email'
     settings.ACE_CHANNEL_SAILTHRU_API_KEY = None
     settings.ACE_CHANNEL_SAILTHRU_API_SECRET = None
-    settings.ACE_CHANNEL_DEFAULT_EMAIL = 'sailthru_email'
-    settings.ACE_CHANNEL_TRANSACTIONAL_EMAIL = 'file_email'
+    settings.ACE_CHANNEL_DEFAULT_EMAIL = 'django_email'
+    settings.ACE_CHANNEL_TRANSACTIONAL_EMAIL = 'django_email'
 
     email_getter = 'openedx.core.djangoapps.site_configuration.helpers:get_email_from_address'
     settings.ACE_CHANNEL_DJANGO_FROM_ADDRESS_GETTER = email_getter
