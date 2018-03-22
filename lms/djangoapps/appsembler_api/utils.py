@@ -33,14 +33,15 @@ def auto_generate_username(email):
 def send_activation_email(request):
     form = PasswordResetFormNoActive(request.data)
     if form.is_valid():
-        form.save(use_https=request.is_secure(),
-                  from_email=configuration_helpers.get_value(
-                      'email_from_address', settings.DEFAULT_FROM_EMAIL),
-                  request=request,
-                  domain_override=request.get_host(),
-                  subject_template_name='appsembler_api/set_password_subject.txt',
-                  email_template_name='appsembler_api/set_password_email.html'
-            )
+        form.save(
+            use_https=request.is_secure(),
+            from_email=configuration_helpers.get_value(
+                'email_from_address', settings.DEFAULT_FROM_EMAIL),
+            request=request,
+            domain_override=request.get_host(),
+            subject_template_name='appsembler_api/set_password_subject.txt',
+            email_template_name='appsembler_api/set_password_email.html'
+        )
         return True
     else:
         return False
