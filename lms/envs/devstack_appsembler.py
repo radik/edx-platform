@@ -64,7 +64,7 @@ if APPSEMBLER_FEATURES.get('ENABLE_EXTERNAL_COURSES', False):
         }
 
 if (APPSEMBLER_FEATURES.get('ENABLE_USAGE_TRACKING', False) or
-    APPSEMBLER_FEATURES.get('ENABLE_USAGE_AGGREGATION', False)):
+        APPSEMBLER_FEATURES.get('ENABLE_USAGE_AGGREGATION', False)):
     # enable both apps for either feature flag, because
     #
     # * appsembler_usage depends on souvenirs models
