@@ -91,7 +91,7 @@ curl -s https://codecov.io/bash > /tmp/codecov
 """
                                 } finally {
                                     archiveArtifacts 'reports/**, test_root/log/**'
-                                    junit 'reports/**/*.xml'
+//                                    junit 'reports/**/*.xml'
                                 }
                             }
                         }
