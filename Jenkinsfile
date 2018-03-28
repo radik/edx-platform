@@ -80,7 +80,7 @@ mongod --fork --logpath=/tmp/mongod.log --nojournal --dbpath /tmp/mongodata
 export NO_PREREQ_INSTALL=true
 
 # run tests
-# paver test_lib --with-flaky --cov-args="-p" --with-xunit
+paver test_lib --with-flaky --cov-args="-p" --with-xunit
 
 # clean up
 killall mongod
